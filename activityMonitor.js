@@ -9,8 +9,8 @@ const commandsMap = {
 };
 
 const logFile = 'activityMonitor.log';
-const UPDATE_INTERVAL_MS = 1000;
-const LOG_INTERVAL_MS = 10 * 1000;
+const UPDATE_INTERVAL_MS = 100;
+const LOG_INTERVAL_MS = 60 * 1000;
 
 function getUnixTimestamp() {
   return Math.floor(Date.now() / 1000)
