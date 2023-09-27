@@ -62,7 +62,6 @@ describe('public-holidays.service', () => {
     });
 
     it('should return false if error', async () => {
-      // axiosMock.mockImplementation(() => Promise.resolve({ data: errorString}));
       axiosMock.mockRejectedValueOnce(new Error(errorString));
 
       const result = await checkIfTodayIsPublicHoliday(country);

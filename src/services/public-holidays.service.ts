@@ -41,8 +41,3 @@ export const getNextPublicHolidays = async (country: string): Promise<PublicHoli
     return [];
   }
 };
-
-// (async () => {
-//   console.log(await getNextPublicHolidays('GB'));
-
-// })()
