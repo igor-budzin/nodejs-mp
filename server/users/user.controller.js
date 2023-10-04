@@ -8,7 +8,14 @@ export class UserController {
 
   getUsers(req, res) {
     res.statusCode = HttpStatuses.OK;
-    res.end(JSON.stringify(this.repository.findMany()));
+    res.end(JSON.stringify({
+      data: this.repository.findMany(),
+      links: {
+        create: '/user/:id',
+        delete: '/user/:id',
+        update: '/user/:id'
+      }
+    }));
   }
 
   getUser(req, res) {
@@ -16,7 +23,15 @@ export class UserController {
     const id = parseInt(urlParts[2], 10);
 
     res.statusCode = HttpStatuses.OK;
-    res.end(JSON.stringify(this.repository.findOne(id)));
+    res.end(JSON.stringify({
+      data: this.repository.findOne(id),
+      links: {
+        list: '/users',
+        create: `/user/${id}`,
+        delete: `/user/${id}`,
+        update: `/user/${id}`
+      }
+    }));
   }
 
   async createUser(req, res) {
@@ -50,7 +65,13 @@ export class UserController {
     const urlParts = req.url.trim('/').split('/');
     const id = parseInt(urlParts[2], 10);
 
-    res.end(JSON.stringify(this.repository.getHobbies(id)));
+    res.end(JSON.stringify({
+      data: this.repository.getHobbies(id),
+      links: {
+        add: `/users/${is}/hobbies`,
+        delete: `/users/${is}/hobbies`,
+      }
+    }));
   }
 
   async addUserHobby(req, res) {
