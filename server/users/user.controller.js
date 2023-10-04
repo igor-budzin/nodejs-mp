@@ -45,4 +45,31 @@ export class UserController {
     res.statusCode = HttpStatuses.OK;
     res.end(JSON.stringify(user));
   }
+
+  getUserHobbies(req, res) {
+    const urlParts = req.url.trim('/').split('/');
+    const id = parseInt(urlParts[2], 10);
+
+    res.end(JSON.stringify(this.repository.getHobbies(id)));
+  }
+
+  async addUserHobby(req, res) {
+    const urlParts = req.url.trim('/').split('/');
+    const id = parseInt(urlParts[2], 10);
+    const body = await Utils.processBody(req);
+
+    const hobbies = this.repository.addHobby(id, JSON.parse(body).hobbies);
+    res.statusCode = HttpStatuses.OK;
+    res.end(JSON.stringify(hobbies));
+  }
+
+  async deleteUserHobby(req, res) {
+    const urlParts = req.url.trim('/').split('/');
+    const id = parseInt(urlParts[2], 10);
+    const body = await Utils.processBody(req);
+
+    const hobbies = this.repository.deleteHobby(id, JSON.parse(body).hobbies)
+    res.statusCode = HttpStatuses.OK;
+    res.end(JSON.stringify(hobbies));
+  }
 }

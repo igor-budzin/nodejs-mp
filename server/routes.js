@@ -25,4 +25,16 @@ export const routes = [
     matcher: (req) => req.method === 'PUT' && req.url.match(/^\/users\/\d+$/),
     routeProccessor: (req, res) => userController.updateUser(req, res)
   },
+  {
+    matcher: (req) => req.method === 'GET' && req.url.match(/^\/users\/\d+\/hobbies$/),
+    routeProccessor: (req, res) =>  userController.getUserHobbies(req, res)
+  },
+  {
+    matcher: (req) => req.method === 'PUT' && req.url.match(/^\/users\/\d+\/hobbies$/),
+    routeProccessor: (req, res) =>  userController.addUserHobby(req, res)
+  },
+  {
+    matcher: (req) => req.method === 'DELETE' && req.url.match(/^\/users\/\d+\/hobbies$/),
+    routeProccessor: (req, res) =>  userController.deleteUserHobby(req, res)
+  }
 ];
