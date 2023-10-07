@@ -1,0 +1,14 @@
+{
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "compilerOptions": {
+      "target": "es6",
+      "esModuleInterop": true,
+    }
+  },
+  "compilerOptions": {
+    "target": "es6",
+    "esModuleInterop": true,
+  }
+}
