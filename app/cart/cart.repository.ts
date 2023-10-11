@@ -29,7 +29,8 @@ export class CartRepository {
     if (!cart) {
       return;
     }
-
+    console.log('---------------');
+    console.log(this.#carts)
     return this.#excludeSystemFields(cart);
   }
 
@@ -45,7 +46,6 @@ export class CartRepository {
     return this.#excludeSystemFields(cart);
   }
 
-
   isExist(userId: UUID) {
     return this.#carts.some((c) => {
       return c.userId === userId && !c.isDeleted;
@@ -55,7 +55,7 @@ export class CartRepository {
   delete(userId: UUID) {
     const cartIndex = this.#carts.findIndex((c) => c.userId === userId);
 
-    if (!cartIndex) {
+    if (cartIndex === -1) {
       return;
     }
 
