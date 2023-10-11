@@ -11,3 +11,5 @@ export interface Cart {
   isDeleted: boolean;
   items: CartItem[];
 }
+
+export interface ExternalCart extends Omit<Cart, 'isDeleted'> { }
