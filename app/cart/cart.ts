@@ -13,3 +13,8 @@ export interface Cart {
 }
 
 export interface ExternalCart extends Omit<Cart, 'isDeleted'> { }
+
+export interface CartMeta {
+  cart: ExternalCart;
+  total: number;
+}

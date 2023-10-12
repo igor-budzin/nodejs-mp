@@ -29,8 +29,7 @@ export class CartRepository {
     if (!cart) {
       return;
     }
-    console.log('---------------');
-    console.log(this.#carts)
+
     return this.#excludeSystemFields(cart);
   }
 

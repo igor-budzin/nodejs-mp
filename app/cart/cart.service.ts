@@ -1,5 +1,5 @@
 import { ProductsService } from '../products/products.service';
-import { Cart, ExternalCart } from './cart';
+import { Cart, CartMeta, ExternalCart } from './cart';
 import { CartRepository } from './cart.repository';
 import { UpdateCartDto } from './updateCart.dto';
 
@@ -63,7 +63,7 @@ export class CartService {
     );
   }
 
-  #withTotal(cart: ExternalCart) {
+  #withTotal(cart: ExternalCart): CartMeta {
     const total = cart.items.reduce((accum, value) => {
       return accum + (value.product.price * value.count);
     }, 0);

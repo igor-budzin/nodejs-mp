@@ -1,25 +1,15 @@
 import express from 'express';
 import { HttpStatuses } from '../utils/httpStatuses';
-import { CartRepository } from './cart.repository';
-import { CartService } from './cart.service';
 import { validationSchema } from './validationSchema';
 import { ValidationError } from '../exceptions/ValidationError';
 import { UpdateCartDto } from './updateCart.dto';
-import { ProductsRepository } from '../products/products.repository';
-import { ProductsService } from '../products/products.service';
+import { cartService } from '../dependencies.container';
 
 const cartRouter = express.Router();
 
-const productRepository = new ProductsRepository();
-const productService = new ProductsService(productRepository)
-  ;
-const repository = new CartRepository();
-const service = new CartService(repository, productService);
-
-
 cartRouter.get('/', (req, res) => {
   const userId = req.headers['x-user-id'] as UUID;
-  const cart = service.findOne(userId);
+  const cart = cartService.findOne(userId);
 
   res
     .status(HttpStatuses.OK)
@@ -31,7 +21,7 @@ cartRouter.get('/', (req, res) => {
 
 cartRouter.delete('/', (req, res) => {
   const userId = req.headers['x-user-id'] as UUID;
-  repository.delete(userId);
+  cartService.delete(userId);
 
   res
     .status(HttpStatuses.OK)
@@ -51,7 +41,7 @@ cartRouter.put('/', (req, res) => {
     throw new ValidationError(error.message);
   }
 
-  const updatedCart = service.update(userId, value as UpdateCartDto);
+  const updatedCart = cartService.update(userId, value as UpdateCartDto);
 
   res
     .status(HttpStatuses.OK)
