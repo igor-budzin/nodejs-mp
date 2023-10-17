@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "outDir": "./dist",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "useUnknownInCatchVariables": true,
+    "typeRoots" : ["./app/@types/"]
+  },
+  "ts-node": {
+    "esm": true
+  },
+  "include": [
+    "./app",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
