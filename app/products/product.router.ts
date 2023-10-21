@@ -4,8 +4,8 @@ import { productService } from '../dependencies.container';
 
 const productsRouter = express.Router();
 
-productsRouter.get('/', (req, res) => {
-  const products = productService.findMany();
+productsRouter.get('/', async (req, res) => {
+  const products = await productService.findMany();
 
   res.json({
     data: products,
@@ -13,8 +13,8 @@ productsRouter.get('/', (req, res) => {
   });
 });
 
-productsRouter.get('/:id', (req, res) => {
-  const product = productService.findOne(req.params.id);
+productsRouter.get('/:id', async (req, res) => {
+  const product = await productService.findOne(req.params.id);
 
   res
     .status(HttpStatuses.OK)

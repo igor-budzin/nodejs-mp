@@ -15,6 +15,7 @@ export class OrderService {
 
   create(userId: UUID) {
     const cartMeta = this.cartService.findOne(userId);
-    return this.orderRepository.create(cartMeta);
+    // TODO: fix
+    return this.orderRepository.create(cartMeta as any);
   }
 }

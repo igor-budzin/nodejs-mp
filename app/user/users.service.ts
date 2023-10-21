@@ -8,8 +8,8 @@ export class UsersService {
     this.repository = repository;
   }
 
-  findOne(id: UUID) {
-    const user = this.repository.findOne(id);
+  async findOne(id: UUID) {
+    const user = await this.repository.findOne(id);
 
     if (!user) {
       throw new NotFoundError('User not found');

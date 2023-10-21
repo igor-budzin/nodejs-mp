@@ -1,18 +1,19 @@
-import products from './dataStub.json';
-import { Product } from './product';
+import { Repository, getManager } from 'typeorm';
+import { Product } from './product.entity';
+import { AppDataSource } from '../db/data-source';
 
 export class ProductsRepository {
-  #products: Product[];
+  repository: Repository<Product>;
 
-  constructor() {
-    this.#products = products;
+  constructor(repository: Repository<Product>) {
+    this.repository = repository;
   }
 
   findMany() {
-    return this.#products;
+    return this.repository.find();
   }
 
   findOne(id: UUID) {
-    return this.#products.find((p) => p.id === id);
+    return this.repository.findOne({ where: { id } });
   }
 }

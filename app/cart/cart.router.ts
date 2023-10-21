@@ -7,9 +7,9 @@ import { cartService } from '../dependencies.container';
 
 const cartRouter = express.Router();
 
-cartRouter.get('/', (req, res) => {
+cartRouter.get('/', async (req, res) => {
   const userId = req.headers['x-user-id'] as UUID;
-  const cart = cartService.findOne(userId);
+  const cart = await cartService.findOne(userId);
 
   res
     .status(HttpStatuses.OK)
@@ -19,9 +19,9 @@ cartRouter.get('/', (req, res) => {
     });
 });
 
-cartRouter.delete('/', (req, res) => {
+cartRouter.delete('/', async (req, res) => {
   const userId = req.headers['x-user-id'] as UUID;
-  cartService.delete(userId);
+  await cartService.delete(userId);
 
   res
     .status(HttpStatuses.OK)
@@ -31,7 +31,7 @@ cartRouter.delete('/', (req, res) => {
     });
 });
 
-cartRouter.put('/', (req, res) => {
+cartRouter.put('/', async (req, res) => {
   const userId = req.headers['x-user-id'] as UUID;
   const params = req.body;
 
@@ -41,7 +41,7 @@ cartRouter.put('/', (req, res) => {
     throw new ValidationError(error.message);
   }
 
-  const updatedCart = cartService.update(userId, value as UpdateCartDto);
+  const updatedCart = await cartService.update(userId, value as UpdateCartDto);
 
   res
     .status(HttpStatuses.OK)

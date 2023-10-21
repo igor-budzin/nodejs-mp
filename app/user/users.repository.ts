@@ -1,14 +1,14 @@
-import users from './dataStub.json';
-import { User } from './user';
+import { Repository } from 'typeorm';
+import { User } from './user.entity';
 
 export class UsersRepository {
-  #users: User[];
+  repository: Repository<User>;
 
-  constructor() {
-    this.#users = users;
+  constructor(repository: Repository<User>) {
+    this.repository = repository;
   }
 
   findOne(id: UUID) {
-    return this.#users.find((u) => u.id === id);
+    return this.repository.findOne({ where: { id } });
   }
 }
