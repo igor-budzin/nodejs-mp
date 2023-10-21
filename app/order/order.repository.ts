@@ -1,36 +1,22 @@
-import { v4 as generateUuid } from 'uuid';
 import { CartMeta } from '../cart/cart';
-import { Order } from './order';
+import { Repository } from 'typeorm';
+import { Order } from './order.entity';
+import { ORDER_STATUS } from './order';
 
 export class OrderRepository {
-  #orders: Order[];
+  #repository: Repository<Order>;
 
-  constructor() {
-    this.#orders = [];
+  constructor(repository: Repository<Order>) {
+    this.#repository = repository;
   }
 
   create(cartMeta: CartMeta) {
-    const order: Order = {
-      id: generateUuid(),
-      userId: cartMeta.cart.userId,
-      cartId: cartMeta.cart.id,
-      items: [...cartMeta.cart.items],
-      payment: {
-        type: 'paypal',
-        address: 'London',
-        creditCard: '1234-1234-1234-1234'
-      },
-      delivery: {
-        type: 'post',
-        address: 'London'
-      },
-      comments: '',
-      status: "created",
-      total: cartMeta.total
-    };
-
-    this.#orders.push(order);
-
-    return order;
+    return this.#repository.save({
+      comments: "test comment",
+      items: cartMeta.cart.items,
+      total: cartMeta.total,
+      status: ORDER_STATUS.CREATED,
+      userId: cartMeta.cart.userId
+    });
   }
 }

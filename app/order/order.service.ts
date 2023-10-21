@@ -13,9 +13,8 @@ export class OrderService {
     this.cartService = cartService;
   }
 
-  create(userId: UUID) {
-    const cartMeta = this.cartService.findOne(userId);
-    // TODO: fix
-    return this.orderRepository.create(cartMeta as any);
+  async create(userId: UUID) {
+    const cartMeta = await this.cartService.findOne(userId);
+    return this.orderRepository.create(cartMeta);
   }
 }

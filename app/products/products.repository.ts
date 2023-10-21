@@ -3,17 +3,17 @@ import { Product } from './product.entity';
 import { AppDataSource } from '../db/data-source';
 
 export class ProductsRepository {
-  repository: Repository<Product>;
+  #repository: Repository<Product>;
 
   constructor(repository: Repository<Product>) {
-    this.repository = repository;
+    this.#repository = repository;
   }
 
   findMany() {
-    return this.repository.find();
+    return this.#repository.find();
   }
 
   findOne(id: UUID) {
-    return this.repository.findOne({ where: { id } });
+    return this.#repository.findOne({ where: { id } });
   }
 }

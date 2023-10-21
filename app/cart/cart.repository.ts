@@ -4,32 +4,32 @@ import { CartItem } from './cartItem.entity';
 import { Product } from '../products/product.entity';
 
 export class CartRepository {
-  cartRepository: Repository<Cart>;
-  itemsRepository: Repository<CartItem>;
+  #cartRepository: Repository<Cart>;
+  #itemsRepository: Repository<CartItem>;
 
   constructor(
     cartRepository: Repository<Cart>,
     itemsRepository: Repository<CartItem>
   ) {
-    this.cartRepository = cartRepository;
-    this.itemsRepository = itemsRepository;
+    this.#cartRepository = cartRepository;
+    this.#itemsRepository = itemsRepository;
   }
 
   async create(userId: UUID) {
-    await this.cartRepository.insert({ userId });
+    await this.#cartRepository.insert({ userId });
     const cart = await this.find(userId) as Cart;
     return cart;
   }
 
   find(userId: UUID) {
-    return this.cartRepository.findOne({
+    return this.#cartRepository.findOne({
       where: { userId },
       relations: ['items', 'items.product']
     });
   }
 
   findById(id: UUID) {
-    return this.cartRepository.findOne({
+    return this.#cartRepository.findOne({
       where: { id },
       relations: ['items', 'items.product']
     });
@@ -37,15 +37,15 @@ export class CartRepository {
   }
 
   isExist(userId: UUID) {
-    return this.cartRepository.exist({ where: { userId } });
+    return this.#cartRepository.exist({ where: { userId } });
   }
 
   async delete(userId: UUID) {
-    await this.cartRepository.softDelete({ userId });
+    await this.#cartRepository.softDelete({ userId });
   }
 
   async addProductToCart(id: UUID, product: Product, count: number) {
-    await this.itemsRepository.insert({
+    await this.#itemsRepository.insert({
       cartId: id,
       product,
       count
@@ -55,9 +55,9 @@ export class CartRepository {
   }
 
   async updateProductInCart(id: UUID, product: Product, count: number) {
-    const item = await this.itemsRepository.findOneBy({ cartId: id, product });
+    const item = await this.#itemsRepository.findOneBy({ cartId: id, product });
 
-    await this.itemsRepository.save({
+    await this.#itemsRepository.save({
       ...item,
       count
     });
@@ -73,7 +73,7 @@ export class CartRepository {
       return;
     }
 
-    await this.itemsRepository.delete({ id: cartItemId });
+    await this.#itemsRepository.delete({ id: cartItemId });
     return this.findById(id);
   }
 }

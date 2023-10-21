@@ -43,7 +43,6 @@
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.17",
-    "uuid": "^9.0.1"
+    "typeorm": "^0.3.17"
   }
 }

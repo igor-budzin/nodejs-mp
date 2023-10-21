@@ -10,6 +10,6 @@ export class User {
   @OneToMany(() => Cart, (cart) => cart.user)
   cart: Cart;
 
-  // @OneToMany(() => Order, (order) => order.user)
-  // orders: Order[];
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }

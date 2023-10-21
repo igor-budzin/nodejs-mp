@@ -3,6 +3,7 @@ import { CartRepository } from './cart/cart.repository';
 import { CartService } from './cart/cart.service';
 import { CartItem } from './cart/cartItem.entity';
 import { AppDataSource } from './db/data-source';
+import { Order } from './order/order.entity';
 import { OrderRepository } from './order/order.repository';
 import { OrderService } from './order/order.service';
 import { Product } from './products/product.entity';
@@ -17,7 +18,7 @@ const cartRepository = new CartRepository(
   AppDataSource.getRepository(Cart),
   AppDataSource.getRepository(CartItem)
 );
-const orderRepository = new OrderRepository();
+const orderRepository = new OrderRepository(AppDataSource.getRepository(Order));
 const userRepository = new UsersRepository(AppDataSource.getRepository(User));
 
 const productService = new ProductsService(productRepository);
@@ -29,6 +30,7 @@ export {
   productRepository,
   cartRepository,
   userRepository,
+  orderRepository,
 
   productService,
   cartService,

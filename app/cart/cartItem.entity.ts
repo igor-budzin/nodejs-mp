@@ -8,8 +8,7 @@ export class CartItem {
   @PrimaryGeneratedColumn('uuid')
   id: UUID;
 
-  @OneToOne(() => Product)
-  @JoinColumn({ name: 'id', referencedColumnName: 'id' })
+  @ManyToOne(() => Product, (product) => product.cartItems)
   product: Product;
 
   @Column('int')
@@ -21,6 +20,6 @@ export class CartItem {
   @Column()
   cartId: UUID;
 
-  // @ManyToOne(() => Order, (order) => order.items)
-  // order: Order;
+  @ManyToOne(() => Order, (order) => order.items)
+  order: Order;
 }

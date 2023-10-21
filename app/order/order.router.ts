@@ -1,12 +1,12 @@
 import express from 'express';
 import { HttpStatuses } from '../utils/httpStatuses';
-import { cartService, orderService } from '../dependencies.container';
+import { orderService } from '../dependencies.container';
 
 const orderRouter = express.Router();
 
-orderRouter.post('/', (req, res) => {
+orderRouter.post('/', async (req, res) => {
   const userId = req.headers['x-user-id'] as UUID;
-  const order = orderService.create(userId);
+  const order = await orderService.create(userId);
 
   res
     .status(HttpStatuses.OK)

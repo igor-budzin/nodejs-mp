@@ -54,7 +54,7 @@ export class CartService {
 
     if (dto.count === 0) {
       const updatedCart = await this.cartRepository
-        .deleteProductFromCart(cart.id, (product as any).id);
+        .deleteProductFromCart(cart.id, product.id);
 
       return this.#withTotal(updatedCart!);
     }
