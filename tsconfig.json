@@ -11,10 +11,15 @@
     "noImplicitAny": true,
     "moduleResolution": "node",
     "useUnknownInCatchVariables": true,
-    "typeRoots" : ["./app/@types/"]
+    "typeRoots" : ["./app/@types/"],
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "types": ["node"]
   },
   "ts-node": {
-    "esm": true
+    "esm": true,
+    "files": true
   },
   "include": [
     "./app",

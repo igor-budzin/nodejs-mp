@@ -12,8 +12,8 @@ export class ProductsService {
     return this.repository.findMany();
   }
 
-  findOne(id: UUID) {
-    const product = this.repository.findOne(id);
+  async findOne(id: UUID) {
+    const product = await this.repository.findOne(id);
 
     if (!product) {
       throw new NotFoundError('Product not found');

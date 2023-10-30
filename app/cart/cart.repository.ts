@@ -1,89 +1,79 @@
-import { v4 as generateUuid } from 'uuid';
-import { Cart, ExternalCart } from './cart'
-import { Product } from '../products/product';
+import { Repository } from 'typeorm';
+import { Cart } from './cart.entity';
+import { CartItem } from './cartItem.entity';
+import { Product } from '../products/product.entity';
 
 export class CartRepository {
-  #carts: Cart[];
+  #cartRepository: Repository<Cart>;
+  #itemsRepository: Repository<CartItem>;
 
-  constructor() {
-    this.#carts = [];
+  constructor(
+    cartRepository: Repository<Cart>,
+    itemsRepository: Repository<CartItem>
+  ) {
+    this.#cartRepository = cartRepository;
+    this.#itemsRepository = itemsRepository;
   }
 
-  create(userId: UUID) {
-    const cart: Cart = {
-      id: generateUuid(),
-      userId,
-      items: [],
-      isDeleted: false,
-    };
-
-    this.#carts.push(cart);
-    return this.#excludeSystemFields(cart);
+  async create(userId: UUID) {
+    await this.#cartRepository.insert({ userId });
+    const cart = await this.find(userId) as Cart;
+    return cart;
   }
 
   find(userId: UUID) {
-    const cart = this.#carts.find((c) => {
-      return c.userId === userId && !c.isDeleted
+    return this.#cartRepository.findOne({
+      where: { userId },
+      relations: ['items', 'items.product']
     });
-
-    if (!cart) {
-      return;
-    }
-
-    return this.#excludeSystemFields(cart);
   }
 
   findById(id: UUID) {
-    const cart = this.#carts.find((c) => {
-      return c.id === id && !c.isDeleted
+    return this.#cartRepository.findOne({
+      where: { id },
+      relations: ['items', 'items.product']
     });
-
-    if (!cart) {
-      return;
-    }
-
-    return this.#excludeSystemFields(cart);
+    // return this.cartRepository.findOneBy({ id });
   }
 
   isExist(userId: UUID) {
-    return this.#carts.some((c) => {
-      return c.userId === userId && !c.isDeleted;
-    });
+    return this.#cartRepository.exist({ where: { userId } });
   }
 
-  delete(userId: UUID) {
-    const cartIndex = this.#carts.findIndex((c) => c.userId === userId);
+  async delete(userId: UUID) {
+    await this.#cartRepository.softDelete({ userId });
+  }
 
-    if (cartIndex === -1) {
+  async addProductToCart(id: UUID, product: Product, count: number) {
+    await this.#itemsRepository.insert({
+      cartId: id,
+      product,
+      count
+    });
+
+    return this.findById(id);
+  }
+
+  async updateProductInCart(id: UUID, product: Product, count: number) {
+    const item = await this.#itemsRepository.findOneBy({ cartId: id, product });
+
+    await this.#itemsRepository.save({
+      ...item,
+      count
+    });
+
+    return this.findById(id);
+  }
+
+  async deleteProductFromCart(id: UUID, productId: UUID) {
+    const cart = await this.findById(id);
+    const cartItemId = cart?.items.find((i) => i.id === productId)?.id;
+
+    if (!cartItemId) {
       return;
     }
 
-    this.#carts[cartIndex].isDeleted = true;
-  }
-
-  addProductToCart(id: UUID, product: Product, count: number) {
-    const cart = this.findById(id) as ExternalCart;
-    cart?.items.push({ count, product });
-    return cart;
-  }
-
-  updateProductInCart(id: UUID, product: Product, count: number) {
-    const cart = this.findById(id) as ExternalCart;
-
-    const productIndex = cart?.items.findIndex((p) => p.product.id === product.id);
-    cart.items[productIndex].count = count;
-
-    return cart;
-  }
-
-  deleteProductFromCart(id: UUID, productId: UUID) {
-    const cart = this.findById(id) as ExternalCart;
-    cart.items = cart.items.filter((i) => i.product.id !== productId);
-    return cart;
-  }
-
-  #excludeSystemFields(cart: Cart) {
-    const { isDeleted, ...rest } = cart;
-    return rest;
+    await this.#itemsRepository.delete({ id: cartItemId });
+    return this.findById(id);
   }
 }
