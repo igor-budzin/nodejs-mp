@@ -1,14 +1,14 @@
-import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { UserType } from './user.entity';
+import { Model } from 'mongoose';
 
 export class UsersRepository {
-  #repository: Repository<User>;
+  #repository: Model<UserType>;
 
-  constructor(repository: Repository<User>) {
+  constructor(repository: Model<UserType>) {
     this.#repository = repository;
   }
 
   findOne(id: UUID) {
-    return this.#repository.findOne({ where: { id } });
+    return this.#repository.findById(id);
   }
 }

@@ -1,6 +1,5 @@
-import { Repository, getManager } from 'typeorm';
-import {  ProductType } from './product.entity';
-import mongoose, { Model } from 'mongoose';
+import { ProductType } from './product.entity';
+import { Model } from 'mongoose';
 
 export class ProductsRepository {
   #repository: Model<ProductType>;

@@ -11,7 +11,7 @@ import { ProductModel } from './products/product.entity';
 import { ProductsController } from './products/products.controller';
 import { ProductsRepository } from './products/products.repository';
 import { ProductsService } from './products/products.service';
-import { User } from './user/user.entity';
+import { UserModel } from './user/user.entity';
 import { UsersRepository } from './user/users.repository';
 import { UsersService } from './user/users.service';
 
@@ -21,12 +21,12 @@ const productRepository = new ProductsRepository(ProductModel);
 //   AppDataSource.getRepository(CartItem)
 // );
 // const orderRepository = new OrderRepository(AppDataSource.getRepository(Order));
-// const userRepository = new UsersRepository(AppDataSource.getRepository(User));
+const userRepository = new UsersRepository(UserModel);
 
 const productService = new ProductsService(productRepository);
 // const cartService = new CartService(cartRepository, productService);
 // const orderService = new OrderService(orderRepository, cartService);
-// const userService = new UsersService(userRepository);
+const userService = new UsersService(userRepository);
 
 const productsController = new ProductsController(productService);
 // const cartController = new CartController(cartService);
@@ -41,7 +41,7 @@ export {
   productService,
   // cartService,
   // orderService,
-  // userService,
+  userService,
 
   productsController,
   // cartController,
