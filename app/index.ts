@@ -6,22 +6,24 @@ import { authMiddleware } from './middlewares/auth.middleware';
 import productsRouter from './products/product.router';
 import cartRouter from './cart/cart.router';
 import orderRouter from './order/order.router';
-import { AppDataSource } from './db/data-source';
+import { connectDb } from './db/data-source';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+
 app.use(express.json());
-app.use(authMiddleware);
+// app.use(authMiddleware);
 app.use('/api/products', productsRouter);
-app.use('/api/profile/cart', cartRouter);
-app.use('/api/profile/cart/checkout', orderRouter);
+// app.use('/api/profile/cart', cartRouter);
+// app.use('/api/profile/cart/checkout', orderRouter);
 app.use(errorHandler);
 
-AppDataSource.initialize()
-  .then(() => {
+connectDb()
+  .on('error', console.log)
+  .on('disconnected', connectDb)
+  .once('open', () => {
     app.listen(port, () => {
       console.log(`Server running at http://localhost:${port}`);
     });
-  })
-  .catch(console.log)
+  });

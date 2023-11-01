@@ -1,16 +1,17 @@
-import { AppDataSource } from '../data-source';
+import mongoose from 'mongoose';
+import { connectDb } from '../data-source';
 import { SeedService } from './seed.service';
 
-AppDataSource.initialize()
-  .then(async () => {
+connectDb()
+  .on('error', console.log)
+  .on('disconnected', connectDb)
+  .once('open', async () => {
     try {
-      const seeder = new SeedService(AppDataSource);
+      const seeder = new SeedService();
       await seeder.run();
       console.log('Finished');
     }
     catch (e) {
       console.log(e)
     }
-  })
-  .catch(console.log);
-
+  });

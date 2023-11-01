@@ -8,11 +8,6 @@
     "task2": "node ./Task_3.2/test.js",
     "test3": "node ./Task_3.3/index.js",
     "start": "nodemon --watch app/** --ext ts,json --exec ts-node --files app/index.ts",
-    "typeorm": "env-cmd ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "migration:generate": "npm run typeorm -- --dataSource=app/db/data-source.ts migration:generate",
-    "migration:create": "npm run typeorm -- migration:create",
-    "migration:run": "npm run typeorm -- --dataSource=app/db/data-source.ts migration:run",
-    "migration:revert": "npm run typeorm -- --dataSource=app/db/data-source.ts migration:revert",
     "seed:run": "ts-node -r tsconfig-paths/register ./app/db/seeds/run-seed.ts"
   },
   "repository": {
@@ -40,6 +35,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "joi": "^17.11.0",
+    "mongoose": "^8.0.0",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.1.13",
