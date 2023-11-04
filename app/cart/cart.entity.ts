@@ -1,23 +1,24 @@
-import { Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../user/user.entity';
-import { CartItem } from './cartItem.entity';
+import { InferSchemaType, Schema, model } from 'mongoose';
 
-@Entity({ name: 'carts' })
-export class Cart {
-  @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+const schema = new Schema({
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  items: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'CartItem',
+    }
+  ],
+}, {
+  versionKey: false
+});
 
-  @ManyToOne(() => User, (user) => user.cart)
-  user: User;
+export const CartModel = model('Cart', schema);
 
-  @Column()
-  userId: string;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
-
-  @OneToMany(() => CartItem, (cartItem) => cartItem.cart, {
-    eager: true
-  })
-  items: CartItem[];
-}
+export type CartType = InferSchemaType<typeof schema>;

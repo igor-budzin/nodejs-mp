@@ -1,4 +1,4 @@
-import mongoose, { InferSchemaType, Schema } from 'mongoose';
+import { InferSchemaType, Schema, model } from 'mongoose';
 
 // @Entity({ name: 'users' })
 // export class User {
@@ -17,6 +17,6 @@ const schema = new Schema({}, {
   versionKey: false
 });
 
-export const UserModel = mongoose.model('User', schema);
+export const UserModel = model('User', schema);
 
 export type UserType = InferSchemaType<typeof schema>;

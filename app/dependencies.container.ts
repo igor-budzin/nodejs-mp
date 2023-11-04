@@ -1,8 +1,9 @@
 import { CartController } from './cart/cart.controller';
-import { Cart } from './cart/cart.entity';
+import { CartModel } from './cart/cart.entity';
+import { CartItemModel } from './cart/cartItem.entity';
 import { CartRepository } from './cart/cart.repository';
 import { CartService } from './cart/cart.service';
-import { CartItem } from './cart/cartItem.entity';
+// import { CartItem } from './cart/cartItem.entity';
 import { OrderController } from './order/order.controller';
 import { Order } from './order/order.entity';
 import { OrderRepository } from './order/order.repository';
@@ -16,34 +17,31 @@ import { UsersRepository } from './user/users.repository';
 import { UsersService } from './user/users.service';
 
 const productRepository = new ProductsRepository(ProductModel);
-// const cartRepository = new CartRepository(
-//   AppDataSource.getRepository(Cart),
-//   AppDataSource.getRepository(CartItem)
-// );
+const cartRepository = new CartRepository(CartModel, CartItemModel);
 // const orderRepository = new OrderRepository(AppDataSource.getRepository(Order));
 const userRepository = new UsersRepository(UserModel);
 
 const productService = new ProductsService(productRepository);
-// const cartService = new CartService(cartRepository, productService);
+const cartService = new CartService(cartRepository, productService);
 // const orderService = new OrderService(orderRepository, cartService);
 const userService = new UsersService(userRepository);
 
 const productsController = new ProductsController(productService);
-// const cartController = new CartController(cartService);
+const cartController = new CartController(cartService);
 // const orderController = new OrderController(orderService);
 
 export {
   productRepository,
-  // cartRepository,
+  cartRepository,
   // userRepository,
   // orderRepository,
 
   productService,
-  // cartService,
+  cartService,
   // orderService,
   userService,
 
   productsController,
-  // cartController,
+  cartController,
   // orderController
 }
