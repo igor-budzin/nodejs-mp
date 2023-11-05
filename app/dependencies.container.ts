@@ -3,9 +3,8 @@ import { CartModel } from './cart/cart.entity';
 import { CartItemModel } from './cart/cartItem.entity';
 import { CartRepository } from './cart/cart.repository';
 import { CartService } from './cart/cart.service';
-// import { CartItem } from './cart/cartItem.entity';
 import { OrderController } from './order/order.controller';
-import { Order } from './order/order.entity';
+import { OrderModel } from './order/order.entity';
 import { OrderRepository } from './order/order.repository';
 import { OrderService } from './order/order.service';
 import { ProductModel } from './products/product.entity';
@@ -18,30 +17,30 @@ import { UsersService } from './user/users.service';
 
 const productRepository = new ProductsRepository(ProductModel);
 const cartRepository = new CartRepository(CartModel, CartItemModel);
-// const orderRepository = new OrderRepository(AppDataSource.getRepository(Order));
+const orderRepository = new OrderRepository(OrderModel);
 const userRepository = new UsersRepository(UserModel);
 
 const productService = new ProductsService(productRepository);
 const cartService = new CartService(cartRepository, productService);
-// const orderService = new OrderService(orderRepository, cartService);
+const orderService = new OrderService(orderRepository, cartService);
 const userService = new UsersService(userRepository);
 
 const productsController = new ProductsController(productService);
 const cartController = new CartController(cartService);
-// const orderController = new OrderController(orderService);
+const orderController = new OrderController(orderService);
 
 export {
   productRepository,
   cartRepository,
-  // userRepository,
-  // orderRepository,
+  userRepository,
+  orderRepository,
 
   productService,
   cartService,
-  // orderService,
+  orderService,
   userService,
 
   productsController,
   cartController,
-  // orderController
+  orderController
 }

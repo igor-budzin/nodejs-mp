@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(authMiddleware);
 app.use('/api/products', productsRouter);
 app.use('/api/profile/cart', cartRouter);
-// app.use('/api/profile/cart/checkout', orderRouter);
+app.use('/api/profile/cart/checkout', orderRouter);
 app.use(errorHandler);
 
 connectDb()
