@@ -31,13 +31,23 @@ export class CartRepository {
         isDeleted: false,
       })
       .select('-isDeleted')
-      .populate<{ items: CartItemType[] }>('items')
+      .populate<{ items: CartItemType[] }>({
+        path: 'items',
+        populate: {
+          path: 'product'
+        }
+      })
       .exec();
   }
 
   findById(id: UUID) {
     return this.#cartRepository.findById(id)
-      .populate<{ items: CartItemType[] }>('items')
+      .populate<{ items: CartItemType[] }>({
+        path: 'items',
+        populate: {
+          path: 'product'
+        }
+      })
       .exec();
   }
 

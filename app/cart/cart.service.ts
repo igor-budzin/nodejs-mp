@@ -66,13 +66,13 @@ export class CartService {
   }
 
   #withTotal(cart: any) {
-    // const total = cart.items?.reduce((accum, value) => {
-    //   return accum + (value.product.price * value.count);
-    // }, 0);
+    const total = cart.items?.reduce((accum: any, value: any) => {
+      return accum + (value.product.price * value.count);
+    }, 0);
 
     return {
       cart,
-      total : 0,
+      total,
     }
   }
 }
