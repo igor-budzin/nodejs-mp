@@ -1,20 +1,22 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { CartItem } from '../cart/cartItem.entity';
+import { InferSchemaType, Schema, model } from 'mongoose';
 
-@Entity({ name: 'products' })
-export class Product {
-  @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+const schema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  }
+}, {
+  versionKey: false
+});
 
-  @Column('text')
-  title: string;
+export const ProductModel = model('Product', schema);
 
-  @Column('text')
-  description: string;
-
-  @Column('decimal')
-  price: number;
-
-  @OneToMany(() => CartItem, (cartItems) => cartItems.product)
-  cartItems: CartItem[];
-}
+export type ProductType = InferSchemaType<typeof schema>;

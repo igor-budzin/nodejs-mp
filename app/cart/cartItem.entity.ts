@@ -1,25 +1,19 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Product } from '../products/product.entity';
-import { Cart } from './cart.entity';
-import { Order } from '../order/order.entity';
+import { InferSchemaType, Schema, model } from 'mongoose';
 
-@Entity({ name: 'cart_items' })
-export class CartItem {
-  @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+const schema = new Schema({
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true
+  },
+  count: {
+    type: Number,
+    required: true
+  }
+}, {
+  versionKey: false
+});
 
-  @ManyToOne(() => Product, (product) => product.cartItems)
-  product: Product;
+export const CartItemModel = model('CartItem', schema);
 
-  @Column('int')
-  count: number;
-
-  @ManyToOne(() => Cart, (cart) => cart.items)
-  cart: Cart;
-
-  @Column()
-  cartId: UUID;
-
-  @ManyToOne(() => Order, (order) => order.items)
-  order: Order;
-}
+export type CartItemType = InferSchemaType<typeof schema>;

@@ -1,29 +1,18 @@
-import { DataSource } from 'typeorm';
-import { Product } from '../../products/product.entity';
-import { User } from '../../user/user.entity';
+import { ProductModel } from '../../products/product.entity';
+import { UserModel } from '../../user/user.entity';
 import products from './data/products.json';
 import users from './data/users.json';
 
 export class SeedService {
-  dataSource: DataSource;
-
-  constructor(dataSource: DataSource) {
-    this.dataSource = dataSource;
-  }
-
   async run() {
-    const productRepository = this.dataSource.getRepository(Product);
-    const userRepository = this.dataSource.getRepository(User);
+    products.forEach(async (p) => {
+      const product = new ProductModel(p);
+      await product.save();
+    });
 
-    const productsCount = await productRepository.count();
-    const usersCount = await userRepository.count();
-
-    if (productsCount === 0) {
-      await this.dataSource.getRepository(Product).insert(products);
-    }
-
-    if (usersCount === 0) {
-      await this.dataSource.getRepository(User).insert(users);
-    }
+    users.forEach(async (u) => {
+      const user = new UserModel(u);
+      await user.save();
+    });
   }
 }

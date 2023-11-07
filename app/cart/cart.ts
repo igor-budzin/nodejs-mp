@@ -1,6 +1,6 @@
-import { Cart } from './cart.entity';
+import { CartType } from './cart.entity';
 
 export interface CartMeta {
-  cart: Cart;
+  cart: CartType;
   total: number;
 }

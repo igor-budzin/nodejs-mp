@@ -1,17 +1,8 @@
 import 'dotenv/config';
-import 'reflect-metadata';
-import { DataSource } from 'typeorm';
+import mongoose from 'mongoose';
 
-export const AppDataSource = new DataSource({
-  type: "postgres",
-  host: "localhost",
-  port: parseInt(process.env.DATABASE_PORT!, 10),
-  username: process.env.DATABASE_USERNAME,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
-  synchronize: false,
-  logging: false,
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-  subscribers: [],
-})
+export const connectDb = () => {
+  const url = `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@127.0.0.1:27017/${process.env.MONGO_INITDB_DATABASE}?authSource=admin`;
+  mongoose.connect(url);
+  return mongoose.connection;
+};

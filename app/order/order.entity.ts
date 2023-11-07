@@ -1,31 +1,35 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../user/user.entity';
-import { CartItem } from '../cart/cartItem.entity';
+import { InferSchemaType, Schema, model } from 'mongoose';
 import { ORDER_STATUS } from './order';
 
-@Entity({ name: 'orders' })
-export class Order {
-  @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+const schema = new Schema({
+  status: {
+    type: String,
+    enum: Object.values(ORDER_STATUS),
+    reqired: true
+  },
+  total: {
+    type: Number,
+    reqired: true
+  },
+  comments: {
+    type: String,
+    reqired: true
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  items: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'CartItem',
+    }
+  ],
+}, {
+  versionKey: false
+});
 
-  @Column('decimal')
-  total: number;
+export const OrderModel = model('Order', schema);
 
-  @Column({
-    type: 'enum',
-    enum: ORDER_STATUS
-  })
-  status: ORDER_STATUS;
+export type OrderType = InferSchemaType<typeof schema>;
 
-  @Column('text')
-  comments: string;
-
-  @ManyToOne(() => User, (user) => user.orders)
-  user: User;
-
-  @Column()
-  userId: UUID;
-
-  @OneToMany(() => CartItem, (cartItem) => cartItem.order)
-  items: CartItem[];
-}

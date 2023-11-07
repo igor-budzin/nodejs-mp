@@ -1,5 +1,5 @@
 import { ProductsService } from '../products/products.service';
-import { Cart } from './cart.entity';
+import { CartType } from './cart.entity';
 import { CartRepository } from './cart.repository';
 import { UpdateCartDto } from './updateCart.dto';
 
@@ -39,7 +39,7 @@ export class CartService {
     const { cart } = await this.findOne(userId);
     const product = await this.productService.findOne(dto.productId);
 
-    const isProductExistInCart = cart.items.some((p) => p.product.id === dto.productId);
+    const isProductExistInCart = cart.items.some((p: any) => p.product._id.toString() === dto.productId);
 
     if (!isProductExistInCart) {
       if (dto.count > 0) {
@@ -65,8 +65,8 @@ export class CartService {
     return this.#withTotal(updatedCart!);
   }
 
-  #withTotal(cart: Cart) {
-    const total = cart.items?.reduce((accum, value) => {
+  #withTotal(cart: any) {
+    const total = cart.items?.reduce((accum: any, value: any) => {
       return accum + (value.product.price * value.count);
     }, 0);
 

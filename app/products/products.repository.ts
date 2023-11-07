@@ -1,11 +1,10 @@
-import { Repository, getManager } from 'typeorm';
-import { Product } from './product.entity';
-import { AppDataSource } from '../db/data-source';
+import { ProductType } from './product.entity';
+import { Model } from 'mongoose';
 
 export class ProductsRepository {
-  #repository: Repository<Product>;
+  #repository: Model<ProductType>;
 
-  constructor(repository: Repository<Product>) {
+  constructor(repository: Model<ProductType>) {
     this.#repository = repository;
   }
 
@@ -14,6 +13,6 @@ export class ProductsRepository {
   }
 
   findOne(id: UUID) {
-    return this.#repository.findOne({ where: { id } });
+    return this.#repository.findById(id);
   }
 }
