@@ -1,37 +1,33 @@
 import { NextFunction, Request, Response } from 'express';
-import { HttpStatuses } from '../utils/httpStatuses';
-import { NotFoundError } from '../exceptions/NotFound';
-import { userService } from '../dependencies.container';
+import * as jwt from "jsonwebtoken";
+import { InvalidToken } from '../exceptions/InvalidToken';
+import { UnauthorizedError } from '../exceptions/Unauthorized';
+
+export interface CurrentUser {
+  id: string,
+  email: string,
+  role: string
+}
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  const userId = req.headers['x-user-id'];
+  const authHeader = req.headers.authorization;
 
-  if (!userId) {
-    res
-      .status(HttpStatuses.FORBIDDEN)
-      .json({
-        data: null,
-        error: {
-          message: "You must be authorized user"
-        }
-      });
+  if (!authHeader) {
+    next(new UnauthorizedError());
+  }
 
-    return;
+  const tokenParts = authHeader?.split(' ');
+
+  if (!tokenParts || tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
+    return next(new InvalidToken());
   }
 
   try {
-    await userService.findOne(userId as UUID);
+    const user = jwt.verify(tokenParts[1], process.env.TOKEN_KEY!) as CurrentUser;
+    req.user = user;
     next();
   }
   catch (err) {
-    if (err instanceof NotFoundError) {
-      res.status(HttpStatuses.UNAUTHORIZED);
-      res.json({
-        data: null,
-        error: {
-          message: "User is not authorized"
-        }
-      });
-    }
+    return next(new InvalidToken());
   }
 };

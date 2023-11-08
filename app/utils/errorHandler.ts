@@ -1,33 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { HttpStatuses } from './httpStatuses';
-import { NotFoundError } from '../exceptions/NotFound';
-import { ValidationError } from '../exceptions/ValidationError';
-import { InternalServerError } from '../exceptions/InternalServerError';
-import { EntityAlreadyExist } from '../exceptions/EntityAlreadyExist';
-import { InvalidCredentials } from '../exceptions/InvalidCredentials';
-
-const errorsMap = [
-  {
-    exception: NotFoundError,
-    statusCode: HttpStatuses.NOT_FOUND
-  },
-  {
-    exception: ValidationError,
-    statusCode: HttpStatuses.BAD_REQUEST
-  },
-  {
-    exception: InternalServerError,
-    statusCode: HttpStatuses.INTERNAL_SERVER_ERROR
-  },
-  {
-    exception: EntityAlreadyExist,
-    statusCode: HttpStatuses.CONFLICT
-  },
-  {
-    exception: InvalidCredentials,
-    statusCode: HttpStatuses.BAD_REQUEST
-  }
-] as const;
+import { errorsMap } from './errorsMap';
 
 export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   const defaultMessage = 'Something went wrong';
