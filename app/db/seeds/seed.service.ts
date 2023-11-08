@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { ProductModel } from '../../products/product.entity';
 import { UserModel } from '../../user/user.entity';
 import products from './data/products.json';
@@ -11,7 +12,14 @@ export class SeedService {
     });
 
     users.forEach(async (u) => {
-      const user = new UserModel(u);
+      const saltLength = 10;
+      const encryptedPassword = await bcrypt.hash(u.password, saltLength);
+
+      const user = new UserModel({
+        ...u,
+        password: encryptedPassword
+      });
+
       await user.save();
     });
   }

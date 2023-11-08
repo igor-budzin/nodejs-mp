@@ -5,6 +5,7 @@ import { UserRole } from './userRoles';
 interface CreateUser {
   email: string;
   password: string;
+  role?: UserRole;
 }
 
 export class UsersRepository {
@@ -24,11 +25,11 @@ export class UsersRepository {
       .exec();
   }
 
-  create({ email, password }: CreateUser) {
+  create({ email, password, role }: CreateUser) {
     return this.#repository.create({
       email,
       password,
-      role: UserRole.USER
+      role: role ?? UserRole.USER
     });
   }
 }

@@ -35,7 +35,6 @@ export class UsersService {
     }
 
     try {
-
       const saltLength = 10;
       const encryptedPassword = await bcrypt.hash(dto.password, saltLength);
 

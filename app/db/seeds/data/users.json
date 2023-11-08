@@ -1,8 +1,12 @@
 [
   {
-    "id": "424c49ee-6f4b-44b6-ae24-84da8b9e02d6"
+    "email": "test1@gmail.com",
+    "password": "123",
+    "role": "USER"
   },
   {
-    "id": "bebc96df-227b-4fe4-9c21-e8b02ec3bbf4"
+    "email": "test2admin@gmail.com",
+    "password": "123",
+    "role": "ADMIN"
   }
 ]
