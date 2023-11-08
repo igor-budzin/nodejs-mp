@@ -6,6 +6,7 @@ import { EntityAlreadyExist } from '../exceptions/EntityAlreadyExist';
 import { InvalidCredentials } from '../exceptions/InvalidCredentials';
 import { InvalidToken } from '../exceptions/InvalidToken';
 import { UnauthorizedError } from '../exceptions/Unauthorized';
+import { Forbidden } from '../exceptions/Forbidden';
 
 export const errorsMap = [
   {
@@ -35,5 +36,9 @@ export const errorsMap = [
   {
     exception: UnauthorizedError,
     statusCode: HttpStatuses.UNAUTHORIZED
+  },
+  {
+    exception: Forbidden,
+    statusCode: HttpStatuses.FORBIDDEN
   }
 ] as const;

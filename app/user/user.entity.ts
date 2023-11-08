@@ -13,7 +13,8 @@ const schema = new Schema({
   },
   role: {
     type: String,
-    enum: Object.values(UserRole)
+    enum: Object.values(UserRole),
+    required: true
   }
 }, {
   versionKey: false

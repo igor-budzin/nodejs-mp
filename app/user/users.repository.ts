@@ -1,5 +1,6 @@
 import { UserType } from './user.entity';
 import { Model } from 'mongoose';
+import { UserRole } from './userRoles';
 
 interface CreateUser {
   email: string;
@@ -26,7 +27,8 @@ export class UsersRepository {
   create({ email, password }: CreateUser) {
     return this.#repository.create({
       email,
-      password
+      password,
+      role: UserRole.USER
     });
   }
 }
