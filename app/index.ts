@@ -1,4 +1,5 @@
 import express from 'express';
+import { Socket } from 'node:net';
 
 import { errorHandler } from './utils/errorHandler';
 import { authMiddleware } from './middlewares/auth.middleware';
@@ -7,7 +8,7 @@ import cartRouter from './cart/cart.router';
 import orderRouter from './order/order.router';
 import userRouter from './user/user.router';
 import { connectDb } from './db/data-source';
-import { Socket } from 'node:net';
+import healthcheck from './healthcheck/healthcheck';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ const dbConnection = connectDb()
   .on('error', console.log);
 
 app.use(express.json());
+app.use('/healthcheck', healthcheck);
 app.use('/api/auth', userRouter);
 app.use(authMiddleware);
 app.use('/api/products', productsRouter);
