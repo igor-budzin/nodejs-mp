@@ -14,6 +14,7 @@ import { ProductsService } from './products/products.service';
 import { UserModel } from './user/user.entity';
 import { UsersRepository } from './user/users.repository';
 import { UsersService } from './user/users.service';
+import { UserController } from './user/user.controller';
 
 const productRepository = new ProductsRepository(ProductModel);
 const cartRepository = new CartRepository(CartModel, CartItemModel);
@@ -28,6 +29,7 @@ const userService = new UsersService(userRepository);
 const productsController = new ProductsController(productService);
 const cartController = new CartController(cartService);
 const orderController = new OrderController(orderService);
+const userController = new UserController(userService);
 
 export {
   productRepository,
@@ -42,5 +44,6 @@ export {
 
   productsController,
   cartController,
-  orderController
+  orderController,
+  userController
 }
