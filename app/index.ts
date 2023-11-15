@@ -9,6 +9,8 @@ import orderRouter from './order/order.router';
 import userRouter from './user/user.router';
 import { connectDb } from './db/data-source';
 import healthcheck from './healthcheck/healthcheck';
+import { requestId } from './middlewares/requestId.middleware';
+import { requestLogger } from './middlewares/requestLogger.middleware';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,6 +21,8 @@ const dbConnection = connectDb()
 
 app.use(express.json());
 app.use('/healthcheck', healthcheck);
+app.use(requestId);
+app.use(requestLogger)
 app.use('/api/auth', userRouter);
 app.use(authMiddleware);
 app.use('/api/products', productsRouter);
