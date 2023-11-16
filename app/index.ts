@@ -1,5 +1,6 @@
 import express from 'express';
 import { Socket } from 'node:net';
+import debug from 'debug';
 
 import { errorHandler } from './utils/errorHandler';
 import { authMiddleware } from './middlewares/auth.middleware';
@@ -12,12 +13,14 @@ import healthcheck from './healthcheck/healthcheck';
 import { requestId } from './middlewares/requestId.middleware';
 import { requestLogger } from './middlewares/requestLogger.middleware';
 
+const debugInfo = debug('app:info');
+
 const app = express();
 const port = process.env.PORT || 3000;
 let connections: Socket[] = [];
 
 const dbConnection = connectDb()
-  .on('error', console.log);
+  .on('error', debugInfo);
 
 app.use(express.json());
 app.use('/healthcheck', healthcheck);
@@ -29,9 +32,11 @@ app.use('/api/products', productsRouter);
 app.use('/api/profile/cart', cartRouter);
 app.use('/api/profile/cart/checkout', orderRouter);
 app.use(errorHandler);
+console.log('DEBUG', process.env.DEBUG);
+
 
 const server = app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  debugInfo(`Server running at http://localhost:${port}`);
 });
 
 server.on('connection', (connection) => {
@@ -40,11 +45,11 @@ server.on('connection', (connection) => {
 });
 
 function shutDown() {
-  console.log('Closing connections...')
+  debugInfo('Closing connections...')
 
   server.close(() => {
     dbConnection.close().then(() => process.exit(0));
-    console.log('Closed out remaining connections');
+    debugInfo('Closed out remaining connections');
   });
 
   setTimeout(() => {
