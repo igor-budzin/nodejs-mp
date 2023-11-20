@@ -7,9 +7,10 @@
     "task1": "node ./Task_3.1/test.js",
     "task2": "node ./Task_3.2/test.js",
     "test3": "node ./Task_3.3/index.js",
-    "start:debug": "cross-env DEBUG=app:* nodemon --watch app/** --ext ts,json --exec ts-node --files app/index.ts",
     "start": "nodemon --watch app/** --ext ts,json --exec ts-node --files app/index.ts",
-    "seed:run": "ts-node -r tsconfig-paths/register ./app/db/seeds/run-seed.ts"
+    "seed:run": "ts-node -r tsconfig-paths/register ./app/db/seeds/run-seed.ts",
+    "start:debug": "cross-env DEBUG=app:* nodemon --watch app/** --ext ts,json --exec ts-node --files app/index.ts",
+    "start:prod": "cross-env DEBUG=app:info ts-node --files app/index.ts"
   },
   "repository": {
     "type": "git",

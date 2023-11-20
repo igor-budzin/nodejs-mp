@@ -6,9 +6,11 @@ import users from './data/users.json';
 
 export class SeedService {
   async run() {
+    const promises: Promise<any>[] = [];
+
     products.forEach(async (p) => {
       const product = new ProductModel(p);
-      await product.save();
+      promises.push(product.save());
     });
 
     users.forEach(async (u) => {
@@ -20,7 +22,9 @@ export class SeedService {
         password: encryptedPassword
       });
 
-      await user.save();
+      promises.push(user.save());
     });
+
+    return Promise.all(promises);
   }
 }

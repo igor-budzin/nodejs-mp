@@ -5,9 +5,8 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
   if (mongoose.connection.readyState) {
-    res
-      .status(200)
-      .json({ status: 'OK' });
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('OK\n');
   }
   else {
     res

@@ -20,7 +20,10 @@ const port = process.env.PORT || 3000;
 let connections: Socket[] = [];
 
 const dbConnection = connectDb()
-  .on('error', debugInfo);
+  .on('error', debugInfo)
+  .on('open', () => {
+    console.log(' dbConnection opened')
+  });
 
 app.use(express.json());
 app.use('/healthcheck', healthcheck);
@@ -32,8 +35,6 @@ app.use('/api/products', productsRouter);
 app.use('/api/profile/cart', cartRouter);
 app.use('/api/profile/cart/checkout', orderRouter);
 app.use(errorHandler);
-console.log('DEBUG', process.env.DEBUG);
-
 
 const server = app.listen(port, () => {
   debugInfo(`Server running at http://localhost:${port}`);
