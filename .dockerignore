@@ -1,0 +1,8 @@
+node_modules
+server
+Task_3.1
+Task_3.2
+Task_3.3
+coverage
+*.log
+*.env

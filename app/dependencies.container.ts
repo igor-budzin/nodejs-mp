@@ -15,6 +15,9 @@ import { UserModel } from './user/user.entity';
 import { UsersRepository } from './user/users.repository';
 import { UsersService } from './user/users.service';
 import { UserController } from './user/user.controller';
+import { Logger } from './logger/logger.service';
+
+const logger = new Logger();
 
 const productRepository = new ProductsRepository(ProductModel);
 const cartRepository = new CartRepository(CartModel, CartItemModel);
@@ -45,5 +48,7 @@ export {
   productsController,
   cartController,
   orderController,
-  userController
+  userController,
+
+  logger,
 }

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpStatuses } from './httpStatuses';
 import { errorsMap } from './errorsMap';
 
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   const defaultMessage = 'Something went wrong';
   const errorDescription = errorsMap.find((e) => err instanceof e.exception);

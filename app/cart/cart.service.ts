@@ -1,5 +1,4 @@
 import { ProductsService } from '../products/products.service';
-import { CartType } from './cart.entity';
 import { CartRepository } from './cart.repository';
 import { UpdateCartDto } from './updateCart.dto';
 
